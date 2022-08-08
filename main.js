@@ -32,7 +32,7 @@ async function main() {
 
         core.info(`==> Repository: ${owner}/${repo}`)
         core.info(`==> Artifact name: ${name}`)
-        core.info(`==> Local path: ${path}`)
+        core.info(`==> Loca path: ${path}`)
 
         if (!workflow) {
             const run = await client.rest.actions.getWorkflowRun({
@@ -143,11 +143,15 @@ async function main() {
             throw new Error("no matching workflow run found with any artifacts?")
         }
 
+        core.info(`Before listWorkflowRunArtifacts`)
+
         let artifacts = await client.paginate(client.rest.actions.listWorkflowRunArtifacts, {
             owner: owner,
             repo: repo,
             run_id: runID,
         })
+
+        core.info(`After listWorkflowRunArtifacts`)
 
         // One artifact or all if `name` input is not specified.
         if (name) {
@@ -185,6 +189,8 @@ async function main() {
         if (artifacts.length == 0) {
             throw new Error("no artifacts found")
         }
+
+        core.info(`Before artifacts loop`)
 
         for (const artifact of artifacts) {
             core.info(`==> Artifact: ${artifact.id}`)

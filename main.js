@@ -144,6 +144,7 @@ async function main() {
         }
 
         core.info(`Before listWorkflowRunArtifacts`)
+        core.info(`${owner}, ${repo}, ${runID}`)
 
         let artifacts = await client.paginate(client.rest.actions.listWorkflowRunArtifacts, {
             owner: owner,
